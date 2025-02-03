@@ -12,7 +12,6 @@ require("dotenv").config();
 app.use(cors());
 
 // Handling preflight requests (OPTIONS)
-app.options('*', cors(corsOptions));
 
 app.use(bodyParser.json());
 
