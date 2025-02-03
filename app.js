@@ -7,7 +7,17 @@ const passport = require("passport");
 //const colyseus = require("colyseus.js");
 require("dotenv").config();
 
-app.use(cors({ origin: "*" }));
+const corsOptions = {
+  origin: '*', // Allow all origins, or you can restrict this to specific domains like: ['https://inquisitive-sunburst-5396b5.netlify.app']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true, // if you need cookies or authentication
+};
+
+app.use(cors(corsOptions));
+
+// Handling preflight requests (OPTIONS)
+app.options('*', cors(corsOptions));
 
 app.use(bodyParser.json());
 
