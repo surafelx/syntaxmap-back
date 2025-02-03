@@ -7,7 +7,14 @@ const passport = require("passport");
 //const colyseus = require("colyseus.js");
 require("dotenv").config();
 
-app.use(cors({ origin: "*" }));
+const urls = [
+  "http://localhost:3000",
+  "https://linguistic-com.herokuapp.com",
+  "https://linguistic-com-qa.herokuapp.com",
+  "https://inquisitive-sunburst-5396b5.netlify.app/",
+];
+
+app.use(cors({ allowedOrigins: urls }));
 
 app.use(bodyParser.json());
 
