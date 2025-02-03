@@ -5,11 +5,11 @@ const connectionString = process.env.DATABASE_URL
 
 
 const pool = new Pool({
-  user: 'tensemapadmin',
-  host: 'localhost',
-  database: 'tensemapdb',
-  password: 'tensemappwd',
-  port: 5432,
-  ssl: false, // Disable SSL
+  user: process.env.DATABASE_USER,
+  host:  process.env.DATABASE_HOST,
+  database: process.env.DATABASE_NAME,
+  password: process.env.DATABASE_PASSWORD,
+  port: process.env.DATABASE_PASSWORD,
+  ssl: true, // Disable SSL
 });
 module.exports = pool;
