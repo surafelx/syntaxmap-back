@@ -8,8 +8,16 @@ const passport = require("passport");
 require("dotenv").config();
 
 
+const corsOptions = {
+  origin: 'https://syntaxmap-front-2z2b.onrender.com',  // Frontend domain
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,  // Allow cookies and credentials
+};
 
-app.use(cors());
+app.use(cors(corsOptions));  // Apply CORS middleware
+app.options('*', cors(corsOptions));  // Handle preflight OPTIONS requests
+
 
 // Handling preflight requests (OPTIONS)
 
