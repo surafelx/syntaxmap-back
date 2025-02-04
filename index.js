@@ -8,9 +8,7 @@ const questionRoutes = require('./routes/Question');
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-const urls = ['http://localhost:3000', 'https://linguistic-com.herokuapp.com', 'https://linguistic-com-qa.herokuapp.com']
-
-app.use(cors({origin:urls}));
+app.use(cors());
 
 app.use(bodyParser.json());
 app.use('/', courseRoutes);
