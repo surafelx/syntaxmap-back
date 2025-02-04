@@ -6,8 +6,19 @@ require("dotenv").config();
 
 const app = express();
 
-app.use(cors());
-app.options("*", cors());
+// Allow the specific frontend origin
+const corsOptions = {
+  origin: 'https://syntaxmap-front-2z2b.onrender.com', // The frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+  credentials: true, // Allow cookies or credentials (for JWT headers)
+};
+
+// Use CORS middleware with the custom options
+app.use(cors(corsOptions));
+
+// Optionally, handle pre-flight requests (OPTIONS)
+app.options('*', cors(corsOptions));
 
 app.use(bodyParser.json());
 require("./config/passportConfig")(passport);
