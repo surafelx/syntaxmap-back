@@ -2,7 +2,7 @@
   "name": "linguistic-com-api",
   "version": "1.0.0",
   "description": "REST API for Linguistic com",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "nodemon app.js"
   },
