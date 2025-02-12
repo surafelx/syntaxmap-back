@@ -11,6 +11,7 @@ const UserUpload = require('./UserUpload.js');
 const InterfaceDao = require('../InterfaceDao.js')
 
 // import syntaxe
+
 const getSyntaxe = require("../../parser/syntaxePostgres.js")
 
 class UserUploadDao extends InterfaceDao {
@@ -25,8 +26,8 @@ class UserUploadDao extends InterfaceDao {
 		console.log('USER_UPLOAD_DAO')
 		console.log(upload.user_id);
 		const uploadId = "DEFAULT";//uuidv4()
-		const values = [uploadId, getSyntaxe(upload.sentence), upload.img, upload.user_id, upload.course_id];
-		const qtext = `INSERT INTO user_upload(id_upload, sentence, img, user_id, course_id) VALUES (${this.dv(values[0])}, ${this.dv(values[1])}, ${this.dv(values[2])}, ${this.dv(values[3])}, ${this.dv(values[4])})`;
+		const values = [uploadId, getSyntaxe(upload.sentence), upload.user_id, upload.course_id];
+		const qtext = `INSERT INTO user_upload(id_upload, sentence, user_id, course_id) VALUES (${this.dv(values[0])}, ${this.dv(values[1])}, ${this.dv(values[2])}, ${this.dv(values[3])})`;
 		console.log(qtext)
 		pool.query(qtext)
 			.then(res => {
@@ -42,8 +43,8 @@ class UserUploadDao extends InterfaceDao {
 
 	UPDATE (upload, callback) {
 		const uploadId = upload.upload_id;
-		const values = [uploadId, getSyntaxe(upload.sentence), upload.img, upload.user_id, upload.course_id];
-		const qtext = `UPDATE user_upload SET sentence = ${this.dv(values[1])}, img = ${this.dv(values[2])}, user_id = ${this.dv(values[3])}, course_id = ${this.dv(values[4])} WHERE id_upload = ${this.dv(values[0])}`;
+		const values = [uploadId, getSyntaxe(upload.sentence), upload.user_id, upload.course_id];
+		const qtext = `UPDATE user_upload SET sentence = ${this.dv(values[1])}, user_id = ${this.dv(values[2])}, course_id = ${this.dv(values[3])} WHERE id_upload = ${this.dv(values[0])}`;
 		console.log(qtext)
 		pool.query(qtext)
 			.then(res => {
@@ -63,13 +64,12 @@ class UserUploadDao extends InterfaceDao {
 	}
 
 	SELECT (criteria, callback) {
-		let qtext = 'SELECT user_upload.id_upload as id_upload, user_upload.sentence as sentence, user_upload.img as img, user_upload.course_id as course_id, user_upload.user_id as user_id FROM user_upload'; // INNER JOIN HAS_RIGHT ON user_upload.id_upload = has_right.id_upload INNER JOIN DBAUTHORIZATION ON has_right.authorizationId = dbauthorization.authorizationId
+		let qtext = 'SELECT user_upload.id_upload as id_upload, user_upload.sentence as sentence, user_upload.course_id as course_id, user_upload.user_id as user_id FROM user_upload'; // INNER JOIN HAS_RIGHT ON user_upload.id_upload = has_right.id_upload INNER JOIN DBAUTHORIZATION ON has_right.authorizationId = dbauthorization.authorizationId
 		if (criteria.sentence)
 			qtext = this.actq(qtext, 'sentence', criteria.sentence);
 		/*if (criteria.user_id)
 			qtext = this.actq(qtext, 'user_id', criteria.user_id);*/
-		if (criteria.img)
-			qtext = this.actq(qtext, 'img', criteria.img);
+	
 		if (criteria.course_id)
 			qtext = this.actq(qtext, 'course_id', criteria.course_id);
 		if (criteria.user_id)
