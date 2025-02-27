@@ -45,6 +45,7 @@ module.exports = (app) => {
     "/userupload/user/:course",
     passport.authenticate("user_connected", { session: false }),
     (req, res) => {
+      console.log("We got here")
       let criteria = {
         course_id: req.params.course,
         user_id: jwtDecode(req.get("Authorization").split(" ")[1]).sub,
