@@ -27,20 +27,23 @@ module.exports = (app) => {
 
   //Get all user
   app.get("/user", (req, res) => {
+    console.log("Got here");
     userService.SELECT({}, (users) => {
       if (!users) {
         res.status(406).end();
         return;
       } else {
         let results = [];
-        if (req.user.authorization === "admin")
+        if (req?.user?.authorization === "admin")
           users.forEach((item) => {
+            delete item.user_password;
             results.push(item.toObject(true, true, true));
           });
         else
           users.forEach((item) => {
+            delete item.user_password;
             if (item.authorization !== "admin")
-              results.push(item.toObject(false, false, false));
+              results.push(item.toObject(false, true, true));
           });
         res.status(200).json({ users: results });
       }

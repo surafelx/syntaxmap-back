@@ -64,7 +64,7 @@ class UserUploadDao extends InterfaceDao {
 	}
 
 	SELECT (criteria, callback) {
-		let qtext = 'SELECT user_upload.id_upload as id_upload, user_upload.sentence as sentence, user_upload.course_id as course_id, user_upload.user_id as user_id FROM user_upload'; // INNER JOIN HAS_RIGHT ON user_upload.id_upload = has_right.id_upload INNER JOIN DBAUTHORIZATION ON has_right.authorizationId = dbauthorization.authorizationId
+		let qtext = 'SELECT user_upload.id_upload as id_upload, user_upload.sentence as sentence, user_upload.course_id as course_id, user_upload.user_id as user_id,  course_table.course_title AS course_title FROM user_upload INNER JOIN course_table ON user_upload.course_id = course_table.course_id'; // INNER JOIN HAS_RIGHT ON user_upload.id_upload = has_right.id_upload INNER JOIN DBAUTHORIZATION ON has_right.authorizationId = dbauthorization.authorizationId
 		if (criteria.sentence)
 			qtext = this.actq(qtext, 'sentence', criteria.sentence);
 		/*if (criteria.user_id)
@@ -78,6 +78,7 @@ class UserUploadDao extends InterfaceDao {
 		pool.query(qtext)
 			.then(res => {
 				let uploads = [];
+				console.log(res.rows)
 				res.rows.forEach(item =>
 					uploads.push(new UserUpload(null, item, null))
 				)

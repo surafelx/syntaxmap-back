@@ -182,13 +182,12 @@ class UserDao extends InterfaceDao {
       );
     if (criteria.user_gender)
       qtext = this.actq(qtext, "user_gender", criteria.user_gender);
-    console.log(qtext);
     pool
       .query(qtext)
       .then((res) => {
+
         let users = [];
         res.rows.forEach((item) => users.push(new User(null, item, null)));
-        //console.log(res.rows);
         callback(users);
       })
       .catch((err) => {

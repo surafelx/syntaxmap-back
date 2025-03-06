@@ -42,10 +42,33 @@ module.exports = (app) => {
 
   //User get his exemple
   app.get(
+    "/userupload/user",
+    passport.authenticate("user_connected", { session: false }),
+    (req, res) => {
+      let criteria = {
+        user_id: jwtDecode(req.get("Authorization").split(" ")[1]).sub,
+      };
+      userUploadService.SELECT(criteria, (userUploads) => {
+        if (!userUploads) {
+          res.status(406).end();
+          return;
+        } else {
+          let results = [];
+          userUploads.forEach((item) => {
+            results.push(item.toObject(true, true, true));
+          });
+          res.status(200).json({ userUploads: results });
+        }
+      });
+    }
+  );
+
+  //User get his exemple
+  app.get(
     "/userupload/user/:course",
     passport.authenticate("user_connected", { session: false }),
     (req, res) => {
-      console.log("We got here")
+      console.log("We got here");
       let criteria = {
         course_id: req.params.course,
         user_id: jwtDecode(req.get("Authorization").split(" ")[1]).sub,
