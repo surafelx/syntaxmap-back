@@ -34,7 +34,7 @@ module.exports = (app) => {
   app.get("/quiz/:id", (req, res) => {
     console.log(req.params);
     let criteria = {
-      question_id: req.params.id,
+      online_exam_ids: req.params.id,
       order: "ASC",
       by: "question_id",
     };
