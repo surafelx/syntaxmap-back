@@ -37,6 +37,7 @@ module.exports = (app) => {
 
   //Get a course from its title
   app.get("/course/:title", (req, res) => {
+    console.log(changeHyphenatedWords(req.params.title).toUpperCase());
     let criteria = {
       course_title: changeHyphenatedWords(req.params.title).toUpperCase(),
     };
