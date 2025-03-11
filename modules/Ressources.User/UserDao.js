@@ -24,7 +24,7 @@ class UserDao extends InterfaceDao {
       userId,
       user.user_email_address,
       user.user_email_address,
-      3,
+      user.user_role || 3,
       user.user_password,
     ];
     const qtext = `INSERT INTO user_table(user_id, user_name, user_email_address, user_role, user_password, user_email_verified) VALUES (${this.dv(
@@ -47,21 +47,10 @@ class UserDao extends InterfaceDao {
 
   UPDATE(user, callback) {
     const userId = user.user_id;
-    const values = [
-      userId,
-      user.user_name,
-      user.user_email_address,
-      user.user_password,
-      user.user_gender,
-      user.last_session,
-    ];
-    const qtext = `UPDATE user_table SET user_name = ${this.dv(
+    const values = [userId, user.user_role];
+    const qtext = `UPDATE user_table SET user_role = ${this.dv(
       values[1]
-    )}, user_email_address = ${this.dv(values[2])}, user_password = ${this.dv(
-      values[3]
-    )}, user_gender = ${this.dv(values[4])}, last_session = ${this.dv(
-      values[5]
-    )} WHERE user_id = ${this.dv(values[0])}`;
+    )}  WHERE user_id = ${this.dv(values[0])}`;
     console.log(qtext);
     pool
       .query(qtext)
@@ -185,7 +174,6 @@ class UserDao extends InterfaceDao {
     pool
       .query(qtext)
       .then((res) => {
-
         let users = [];
         res.rows.forEach((item) => users.push(new User(null, item, null)));
         callback(users);

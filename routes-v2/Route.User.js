@@ -65,6 +65,36 @@ module.exports = (app) => {
     });
   });
 
+  app.post("/user/add", (req, res) => {
+    bcrypt.hash(req.body.user_password, 10, function (err, hash) {
+      let user = {
+        user_email_address: req.body.user_email_address,
+        user_password: hash,
+        user_role: req.body.user_role,
+      };
+      let bodyNewUser = new User(null, null, user);
+      userService.INSERT(bodyNewUser, (newUser) => {
+        console.log(newUser);
+        res.status(200).json({ msg: "User succesfully registerd" });
+      });
+    });
+  });
+
+  app.put("/user/update/:id", (req, res) => {
+    bcrypt.hash(req.body.user_password, 10, function (err, hash) {
+      let user = {
+        user_id: req.params.id,
+        user_role: req.body.user_role,
+      };
+      console.log(req.body)
+      let bodyNewUser = new User(null, null, user);
+      userService.UPDATE(bodyNewUser, (newUser) => {
+        console.log(newUser);
+        res.status(200).json({ msg: "User succesfully registerd" });
+      });
+    });
+  });
+
   app.post("/user/password", (req, res) => {
     bcrypt.hash(req.body.user_password, 10, function (err, hash) {
       let user = {
@@ -129,6 +159,15 @@ module.exports = (app) => {
       } else {
         res.status(200).json({ msg: "you can log in" });
       }
+    });
+  });
+
+  app.delete("/user/:id", (req, res) => {
+    let user = {
+      user_id: req.params.id,
+    };
+    userService.DELETE(user, (users) => {
+      res.status(200).json({ users: users });
     });
   });
 };
