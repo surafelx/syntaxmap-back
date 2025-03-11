@@ -31,6 +31,8 @@ module.exports = (app) => {
     });
   });
 
+  
+
   app.get("/quiz/:id", (req, res) => {
     console.log(req.params);
     let criteria = {
@@ -51,6 +53,28 @@ module.exports = (app) => {
       }
     });
   });
+
+  app.get("/quiz/mistake/:id", (req, res) => {
+    console.log(req.params);
+    let criteria = {
+      question_ids: req.params.id,
+      order: "ASC",
+      by: "question_id",
+    };
+    questionService.SELECT(criteria, (questions) => {
+      if (!questions) {
+        res.status(406).end();
+        return;
+      } else {
+        let results = [];
+        questions.forEach((item) => {
+          results.push(item.toObject(true, true, true));
+        });
+        res.status(200).json({ questions: results });
+      }
+    });
+  });
+
 
   //Add a question
   app.post("/quiz", (req, res) => {
